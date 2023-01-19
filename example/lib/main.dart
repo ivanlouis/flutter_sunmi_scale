@@ -13,7 +13,7 @@ class MyApp extends StatelessWidget {
     return MaterialApp(
       home: Scaffold(
         appBar: AppBar(
-          title: Text("商米电子称"),
+          title: Text("scango.ch scale"),
         ),
         body: ScaleInfo(),
       ),
@@ -35,7 +35,8 @@ class _ScaleInfoState extends State<ScaleInfo> {
   static const EventChannel eventChannel =
       EventChannel(FlutterSunmiScale.EVENT_CHANNEL_NAME);
 
-  SunmiScaleData _scaleData = SunmiScaleData(false, 0, 0, false, false, false, false, false);
+  SunmiScaleData _scaleData =
+      SunmiScaleData(false, 0, 0, false, false, false, false, false);
 
   @override
   void initState() {
@@ -52,8 +53,9 @@ class _ScaleInfoState extends State<ScaleInfo> {
 
   void _onError(Object error) {
     setState(() {
-      PlatformException exception = error;
-      _scaleData = null;
+      //  PlatformException exception = error;
+      _scaleData =
+          SunmiScaleData(false, 0, 0, false, false, false, false, false);
     });
   }
 
@@ -65,9 +67,7 @@ class _ScaleInfoState extends State<ScaleInfo> {
    * 激活稳定。
    */
   get activedStable {
-    return _scaleData.isStable &&
-        !_scaleData.overload &&
-        !isUnderload;
+    return _scaleData.isStable && !_scaleData.overload && !isUnderload;
   }
 
   /**
@@ -102,9 +102,7 @@ class _ScaleInfoState extends State<ScaleInfo> {
     FlutterSunmiScale.tare();
   }
 
-  void _onSetNumTareClick() {
-
-  }
+  void _onSetNumTareClick() {}
 
   void _onClearTareClick() {
     FlutterSunmiScale.clearTare();
@@ -155,15 +153,15 @@ class _ScaleInfoState extends State<ScaleInfo> {
     return Row(
       children: [
         Text(
-          "最大秤量：6/15kg",
+          "Maximum weighing：6/15kg",
           style: TextStyle(color: TEXT_COLOR2, fontSize: 12),
         ),
         Text(
-          "最小秤量：40g",
+          "Minimum weighing：40g",
           style: TextStyle(color: TEXT_COLOR2, fontSize: 12),
         ),
         Text(
-          "分度值 e=2/5g",
+          "Division value e=2/5g",
           style: TextStyle(color: TEXT_COLOR2, fontSize: 12),
         ),
         Text(
@@ -183,13 +181,13 @@ class _ScaleInfoState extends State<ScaleInfo> {
           child: Column(children: [
             ScaleInfoActivedItem(
               activedStable,
-              "稳定",
+              "stability",
               style: TextStyle(color: TEXT_COLOR1),
             ),
             Container(
               child: ScaleInfoActivedItem(
                 activedNetWeight,
-                "净重",
+                "net weight",
                 style: TextStyle(color: TEXT_COLOR1),
               ),
               margin: EdgeInsets.fromLTRB(0, 6.5, 0, 0),
@@ -197,7 +195,7 @@ class _ScaleInfoState extends State<ScaleInfo> {
             Container(
               child: ScaleInfoActivedItem(
                 activedZore,
-                "零位",
+                "zero position",
                 style: TextStyle(color: TEXT_COLOR1),
               ),
               margin: EdgeInsets.fromLTRB(0, 6.5, 0, 0),
@@ -208,12 +206,14 @@ class _ScaleInfoState extends State<ScaleInfo> {
           child: Column(
             children: [
               Text(
-                _scaleData.tare == 0 ? "计重(kg)" : "净重(kg)",
+                _scaleData.tare == 0 ? "by weight (kg)" : "net weight (kg)",
                 style: TextStyle(color: TEXT_COLOR2),
               ),
               Text(
                 _scaleData.isCanUse ? formatQuality(_scaleData.net) : "---",
-                style: TextStyle(color: _scaleData.isCanUse ? TEXT_COLOR1 : Colors.red, fontSize: 40),
+                style: TextStyle(
+                    color: _scaleData.isCanUse ? TEXT_COLOR1 : Colors.red,
+                    fontSize: 40),
               )
             ],
             crossAxisAlignment: CrossAxisAlignment.end,
@@ -223,12 +223,14 @@ class _ScaleInfoState extends State<ScaleInfo> {
           child: Column(
             children: [
               Text(
-                "皮重(kg)",
+                "Tare (kg)",
                 style: TextStyle(color: TEXT_COLOR2),
               ),
               Text(
                 _scaleData.isCanUse ? formatQuality(_scaleData.tare) : "---",
-                style: TextStyle(color: _scaleData.isCanUse ? TEXT_COLOR1 : Colors.red, fontSize: 40),
+                style: TextStyle(
+                    color: _scaleData.isCanUse ? TEXT_COLOR1 : Colors.red,
+                    fontSize: 40),
               )
             ],
             crossAxisAlignment: CrossAxisAlignment.end,
@@ -246,25 +248,25 @@ class _ScaleInfoState extends State<ScaleInfo> {
         FlatButton(
             onPressed: _onZeroClick,
             child: Text(
-              "清零",
+              "cleared",
               style: TextStyle(color: TEXT_COLOR1),
             )),
         FlatButton(
             onPressed: _onTareClick,
             child: Text(
-              "去皮",
+              "null",
               style: TextStyle(color: TEXT_COLOR1),
             )),
         FlatButton(
             onPressed: _onSetNumTareClick,
             child: Text(
-              "数字去皮",
+              "set tare",
               style: TextStyle(color: TEXT_COLOR1),
             )),
         FlatButton(
             onPressed: _onClearTareClick,
             child: Text(
-              "清皮",
+              "clear tare",
               style: TextStyle(color: TEXT_COLOR1),
             ))
       ],
@@ -286,7 +288,7 @@ class _ScaleInfoState extends State<ScaleInfo> {
           child: Column(
             children: [
               Text(
-                "单价(元/kg)",
+                "unit price (CHF/kg)",
                 style: TextStyle(color: TEXT_COLOR2),
               ),
               Text(
@@ -303,7 +305,7 @@ class _ScaleInfoState extends State<ScaleInfo> {
             child: Column(
               children: [
                 Text(
-                  "总价(元)",
+                  "total price (CHF)",
                   style: TextStyle(color: TEXT_COLOR2),
                 ),
                 Text(
@@ -328,7 +330,7 @@ class ScaleInfoActivedItem extends StatelessWidget {
   String text;
   TextStyle style;
 
-  ScaleInfoActivedItem(this.actived, this.text, {this.style}) {}
+  ScaleInfoActivedItem(this.actived, this.text, {required this.style}) {}
 
   @override
   Widget build(BuildContext context) {
